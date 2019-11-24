@@ -104,6 +104,10 @@ if (args.length < 2) {
       '.rbenv/',
       '--exclude',
       'Library/Developer',
+      '--exclude',
+      'Firefox/Profiles',
+      '--exclude',
+      'Chrome/Default',
 
       '--exclude',
       'Caches/',
