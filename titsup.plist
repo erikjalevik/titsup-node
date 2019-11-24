@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>local.titsup</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>open</string>
+          <string>-a</string>
+          <string>Terminal</string>
+          <string>/Users/ejal/dev/titsup-node/titsup.sh</string>
+        </array>
+        <key>StartCalendarInterval</key>
+        <dict>
+            <key>Hour</key>
+            <integer>20</integer>
+            <key>Minute</key>
+            <integer>00</integer>
+        </dict>
+        <key>StandardErrorPath</key>
+        <string>/tmp/titsup.err</string>
+        <key>StandardOutPath</key>
+        <string>/tmp/titsup.out</string>
+    </dict>
+</plist>
