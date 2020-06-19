@@ -79,14 +79,14 @@ if (args.length < 2) {
     proc = spawn('xcopy', xcopyArgs, {shell: true});
   } else {
     const rsyncArgs = [
-      '--recursive',
+      '--archive', // equivalent to -rlptgoD, i.e. --recursive, --links, --perms, --times,
+                   // --group, --owner, --devices, --specials
+
       '--delete-before', // delete target files before syncing
       '--ignore-errors', // deleting gets skipped on any file reading IO error without this
-      '--links', // don't follow symlinks
-      '--perms', // preserve premissions
-      '--times', // preserve creation/modified timestamps
       '--progress', // progress output during transfer
       '--stats', // summary stats at the end
+      '--human-readable',
 
       '--exclude',
       '.Trash/',
