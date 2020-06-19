@@ -1,0 +1,69 @@
+File with special characters are not matched up properly leading to them being deleted and recopied every time, e.g.
+
+  deleting Documents/Expenses/16.03/Köln_Expenses_10.3.pdf
+
+There is a solution, but it requires first upgrading rsync, Mac comes with really old version 2.6.9. Use Homebrew to get 3.1.3 (at the time of writing). Solution is to use --iconv:
+
+https://askubuntu.com/questions/533690/rsync-with-special-character-files-not-working-between-mac-and-linux
+
+First tried --iconv=. which is supposed to pick the right encodings automatically, but that didn't work:
+
+  [Receiver] cannot convert filename: design/Eurowings Mobile/06 Exported Assets/Servicesoverview/SVG/services overview icon_sondergepäckundhaustiere_check.svg (Invalid or incomplete multibyte or wide character)
+
+This worked. But it still has a problem with files with forward slashes in the name, e.g.
+
+  deleting Dropbox/Apps/SpendingTracker/16-Sep-2018 195016
+
+These slashes turn into colons in the Terminal. Can't find an answer to this.
+
+-------------------------------------------------------------------------------
+
+Realised that I can use rsync to go directly to the NAS instead of first mounting via AFP. To do so:
+
+1. Log in to the NAS
+2. Control Panel > File Services > rsync: Tick "Enable rsync service"
+3. Control Panel > Terminal & SNMP > Terminal: Tick "Enable SSH service"
+4. Now we can just go to the source and run rsync folder/ admin@192.168.0.14:/volume1/share/folder
+
+However, password can't be added after admin here, so need to set up SSH keys as well. To do so, follow iunstructions here:
+
+https://stamler.ca/enable-passwordless-ssh-on-synology-dsm6/
+
+It fails to mention how to restart the sshd daemon, but the correct way for Synology is:
+
+synoservicectl --restart sshd
+
+Although that didn't seem to work, so I rebooted the NAS. Now I can log back in via SSH. (Doh, it does mention the command, but below the instruction to restart.)
+
+Holy crap, the whole backup now takes only 5 minutes instead of hours!
+
+-------------------------------------------------------------------------------
+
+Found that some files seemed to get copied almost every time despite not having changed, e.g.
+
+dev/cfo/img/numix/status/clipman.svg
+
+For some reason, rsync sometimes sets its date on the destination to a newer date:
+
+> stat -x ../cfo/img/numix/status/clipman.svg
+  File: "../cfo/img/numix/status/clipman.svg"
+  Size: 392          FileType: Regular File
+  Mode: (0644/-rw-r--r--)         Uid: (  502/    ejal)  Gid: (   20/   staff)
+Device: 1,4   Inode: 8597670890    Links: 1
+Access: Mon Jun 15 08:50:11 2020
+Modify: Sun Apr 29 10:36:11 2018
+Change: Sun Apr 29 10:36:11 2018
+
+> stat -x /tmp/share/Backup/Mac/ejal/dev/cfo/img/numix/status/clipman.svg
+  File: "/tmp/share/Backup/Mac/ejal/dev/cfo/img/numix/status/clipman.svg"
+  Size: 392          FileType: Regular File
+  Mode: (0777/-rwxrwxrwx)         Uid: (  502/    ejal)  Gid: (   20/   staff)
+Device: 51,5   Inode: 4080206    Links: 1
+Access: Tue Nov 12 11:00:59 2019
+Modify: Tue Nov 12 11:00:59 2019
+Change: Tue Nov 12 11:00:59 2019
+
+Then after this has happened, on next run of rsync, it detects a date mismatch and copies the file. The copy can be suppressed by specifying --update, which only copies files that are newer in the source. But that's not really a solution.
+
+The problem is this Nov 12 date, which doesn't make any sense.
+
