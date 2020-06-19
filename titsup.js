@@ -1,3 +1,7 @@
+// Run like so:
+//   node titsup.js sourceDir targetDir [--dry-run]
+// Neither dir should have trailing slash.
+
 const fs = require('fs');
 const spawn = require('child_process').spawn;
 const os = require("os");
@@ -83,10 +87,12 @@ if (args.length < 2) {
                    // --group, --owner, --devices, --specials
 
       '--delete-before', // delete target files before syncing
+      '--delete-excluded', // deletes dirs in source that are excluded with --exclude
       '--ignore-errors', // deleting gets skipped on any file reading IO error without this
       '--progress', // progress output during transfer
       '--stats', // summary stats at the end
       '--human-readable',
+      '--iconv=utf-8-mac,utf-8', // use correct character encodings
 
       '--exclude',
       '.Trash/',
