@@ -81,7 +81,63 @@ if (args.length < 2) {
     // /Y - suppresses overwrite prompt
     const xcopyArgs = [`"${srcDir}"`, `"${targetDir}"`, '/D', '/E', '/C', '/I', '/R', '/Y'];
     proc = spawn('xcopy', xcopyArgs, {shell: true});
+
+  } else if (os.platform() === 'linux') { // WSL
+
+    const rsyncArgs = [
+      '--archive', // equivalent to -rlptgoD, i.e. --recursive, --links, --perms, --times,
+                   // --group, --owner, --devices, --specials
+
+      '--delete-before', // delete target files before syncing
+      '--delete-excluded', // deletes dirs in source that are excluded with --exclude
+      '--ignore-errors', // deleting gets skipped on any file reading IO error without this
+      '--progress', // progress output during transfer
+      '--stats', // summary stats at the end
+      '--human-readable',
+      '--whole-file',
+
+      '--exclude',
+      'node_modules/',
+      '--exclude',
+      '.nvm/',
+      '--exclude',
+      '.npm/',
+      '--exclude',
+      '.node-gyp/',
+      '--exclude',
+      '.svn/',
+      '--exclude',
+      '.git/',
+      '--exclude',
+      '.vs/',
+      '--exclude',
+      'Thumbs.db',
+      '--exclude',
+      'Firefox/Profiles',
+      '--exclude',
+      'Chrome/Default',
+
+      '--exclude',
+      'Caches/',
+      '--exclude',
+      'Cache/',
+      '--exclude',
+      '.cache/',
+      '--exclude',
+      'CacheStorage/',
+      '--exclude',
+      '.awcache/',
+
+      `"${srcDir}/"`, // trailing slash important
+      `"${targetDir}"`
+    ];
+    if (dryRun) {
+      rsyncArgs.unshift('--dry-run');
+    }
+    proc = spawn('rsync', rsyncArgs, {shell: true});
+
   } else {
+
     const rsyncArgs = [
       '--archive', // equivalent to -rlptgoD, i.e. --recursive, --links, --perms, --times,
                    // --group, --owner, --devices, --specials
