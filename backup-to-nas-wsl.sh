@@ -6,6 +6,7 @@ TITSUP_PATH=~/dev/titsup-node/titsup.js
 NAS_PATH=admin@192.168.0.14:/volume1
 
 $NODE_BINARY "$TITSUP_PATH" /mnt/d/Musik "${NAS_PATH}/share/music"
+$NODE_BINARY "$TITSUP_PATH" /mnt/d/Video "${NAS_PATH}/share/video"
 
 $NODE_BINARY "$TITSUP_PATH" /mnt/d/Doks "${NAS_PATH}/share/Backup/Win/Doks"
 $NODE_BINARY "$TITSUP_PATH" /mnt/c/Users/Erik/dev "${NAS_PATH}/share/Backup//Win/dev"
