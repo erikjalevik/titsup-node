@@ -9,4 +9,4 @@ $NODE_BINARY "$TITSUP_PATH" /mnt/d/Musik "${NAS_PATH}/share/music"
 $NODE_BINARY "$TITSUP_PATH" /mnt/d/Video "${NAS_PATH}/share/video"
 
 $NODE_BINARY "$TITSUP_PATH" /mnt/d/Doks "${NAS_PATH}/share/Backup/Win/Doks"
-$NODE_BINARY "$TITSUP_PATH" /mnt/c/Users/Erik/dev "${NAS_PATH}/share/Backup//Win/dev"
+$NODE_BINARY "$TITSUP_PATH" /mnt/c/Users/Erik/dev "${NAS_PATH}/share/Backup/Win/dev"
