@@ -17,3 +17,13 @@ To see running process and eventual error codes, do `launctl list | grep titsup`
 If we don't do `open -a Terminal ...`, it will run hidden in the background.
 
 The reason we're not using `/Volume/share` is that I could not get the mount command to work with that path, it only works from Finder. Unmounting of `/Volumes/share` is necessary in the beginning because otherwise `/tmp/share` won't mount saying it's already mounted.
+
+# Windows notes
+
+Using `rsync` here as well now via installed Ubuntu in WSL. We have a file `backupToNAS.bat` out in Doks on Windows, which is registered with the Task Scheduler (shows up as Aufgabeplanung in the start menu) to run on a daily schedule. This file calls:
+
+```
+wsl bash -c "bash ~/dev/titsup-node/backup-to-nas-wsl.sh"
+```
+
+Internally, it then launches `titsup.js` on a few different locations.
