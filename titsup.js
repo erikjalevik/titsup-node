@@ -96,6 +96,8 @@ if (args.length < 2) {
       '--human-readable',
       '--whole-file',
 
+      '--modify-window=2', // needed for copying to ExFAT (Diamond drive) (https://askubuntu.com/a/187028)
+
       '--exclude',
       'node_modules/',
       '--exclude',
